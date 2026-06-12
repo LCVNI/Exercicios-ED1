@@ -22,10 +22,7 @@ class Arvore{
 Nodo* Arvore:: inserir(Nodo *raiz, int n){
     if(raiz == nullptr){
         Nodo * novo = new Nodo();
-        if(novo == nullptr){
-            cout << "Falha ao alocar memoria" << endl;
-            exit(1);
-        }
+        if(novo == nullptr) exit(1);
         novo->info = n;
         novo->esq = nullptr;
         novo->dir = nullptr;
@@ -52,12 +49,24 @@ void Arvore::emOrdem(Nodo *raiz){
 void Arvore::preOrdem(Nodo *raiz){
     if(raiz == nullptr) return;
     preOrdem(raiz->esq);
-    cout << raiz->info;
     preOrdem(raiz->dir);
+    cout << raiz->info;
 }
 void Arvore::posOrdem(Nodo *raiz){
     if(raiz == nullptr) return;
     cout << raiz->info;
     posOrdem(raiz->esq);
     posOrdem(raiz->dir);
+}
+
+int main(){
+    Arvore a;
+    int n;
+    for(int i = 0; i < 6; i++){
+        cout<< "Inserir na arvore: ";
+        cin>>n;
+        a.raiz = a.inserir(a.raiz, n);
+    }
+    a.posOrdem(a.raiz);
+    return 0;
 }
