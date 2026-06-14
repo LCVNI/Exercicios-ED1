@@ -7,6 +7,60 @@ class Nodo{
     Nodo *esq, *dir;
 };
 
+class Nodo2{
+    public:
+    Nodo *info;
+    Nodo2 *prox;
+};
+
+class Fila{
+    private:
+    Nodo2 *inicio;
+    Nodo2 *fim;
+    public:
+    Fila(){
+        inicio = nullptr;
+        fim = nullptr;
+    }
+    void inserir(Nodo *raiz);
+    Nodo* retirar();
+    Nodo2* getInicio();
+};
+Nodo2* Fila::getInicio(){
+    return inicio;
+}
+
+void Fila:: inserir(Nodo *raiz){
+    Nodo2 *novo;
+    novo =new Nodo2;
+    if (novo == nullptr) exit(1);
+    novo->info = raiz;
+    novo->prox = nullptr;
+    if (inicio == nullptr){
+        inicio = novo;
+    }
+    else{
+        fim->prox = novo;
+    }
+    fim = novo;
+}
+
+Nodo* Fila::retirar() {
+   
+    if (inicio == nullptr) {
+        //cout << "Erro: Fila vazia!" << endl;
+        return nullptr; 
+    }
+    Nodo *valor = inicio->info;
+    Nodo2 *temp = inicio;
+    inicio = inicio->prox;
+    if (inicio == nullptr) {
+        fim = nullptr;
+    }
+    delete temp;
+    return valor;
+}
+
 class Arvore{
     public:
     Nodo *raiz;
@@ -14,9 +68,7 @@ class Arvore{
         raiz = nullptr;
     }
     Nodo *inserir(Nodo *raiz, int n);
-    void emOrdem(Nodo *raiz);
-    void posOrdem(Nodo *raiz);
-    void preOrdem(Nodo *raiz);
+    void imprimirNivel();
 };
 
 Nodo* Arvore:: inserir(Nodo *raiz, int n){
@@ -40,33 +92,35 @@ Nodo* Arvore:: inserir(Nodo *raiz, int n){
     }
 }
 
-void Arvore::emOrdem(Nodo *raiz){
-    if(raiz == nullptr) return;
-    emOrdem(raiz->esq);
-    cout << raiz->info;
-    emOrdem(raiz->dir);
-}
-void Arvore::preOrdem(Nodo *raiz){
-    if(raiz == nullptr) return;
-    preOrdem(raiz->esq);
-    preOrdem(raiz->dir);
-    cout << raiz->info;
-}
-void Arvore::posOrdem(Nodo *raiz){
-    if(raiz == nullptr) return;
-    cout << raiz->info;
-    posOrdem(raiz->esq);
-    posOrdem(raiz->dir);
+void Arvore::imprimirNivel(){
+    if(raiz == nullptr){
+        return;
+    }
+    Fila f;
+    Nodo *atual = nullptr;
+    f.inserir(raiz);
+    while(f.getInicio()){
+        atual = f.retirar();
+        cout<<atual->info<< " ";
+        if(atual->esq){
+            f.inserir(atual->esq);
+        }
+        if(atual->dir){
+            f.inserir(atual->dir);
+        }
+    }
+
 }
 
 int main(){
     Arvore a;
     int n;
-    for(int i = 0; i < 6; i++){
-        cout<< "Inserir na arvore: ";
+    a.raiz =nullptr;
+    for(int i=0; i<5; i++){
+        cout<<"Inserir na arvore: ";
         cin>>n;
         a.raiz = a.inserir(a.raiz, n);
     }
-    a.posOrdem(a.raiz);
-    return 0;
+    cout<<"\n Impressao por nivel:"<<endl;
+    a.imprimirNivel();
 }

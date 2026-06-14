@@ -1,3 +1,9 @@
+/*
+Codigo padrao de uma estrutura de arvore
+com funcoes de inserir, imprimir em ordem, pos-ordem
+e pre-ordem
+implementadas
+*/
 #include<iostream>
 #include<cstdlib>
 using namespace std;
